@@ -76,9 +76,11 @@ with st.sidebar:
     from_mail = st.text_input("From Email")
     app_password = st.text_input("App Password", type="password")
     if is_valid_email(from_mail):
-        save_to_env("EMAIL_USERNAME", from_mail)
+        # save_to_env("EMAIL_USERNAME", from_mail)
+        st.secrets("EMAIL_USERNAME") = from_mail
     if len(app_password) == 16:
-        save_to_env("EMAIL_PASSWORD", app_password)
+        # save_to_env("EMAIL_PASSWORD", app_password)
+        st.secrets("EMAIL_PASSWORD") = app_password
 
 
 

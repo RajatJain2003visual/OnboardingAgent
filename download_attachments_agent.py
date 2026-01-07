@@ -5,6 +5,7 @@ from getpass import getpass
 from typing import Optional
 from langchain.tools import tool
 from dotenv import load_dotenv
+import streamlit as st
 
 load_dotenv(override=True)
 
@@ -26,8 +27,11 @@ def download_attachments(
     OR <crit1> <crit2>, (use X-GM-RAW for Gmail)
     For example: '(SUBJECT "Offer Letter")' OR '(SINCE 01-Dec-2024 LARGER 50000 UNFLAGGED)' etc
     """
-    USERNAME = os.getenv("EMAIL_USERNAME")
-    EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+    # USERNAME = os.getenv("EMAIL_USERNAME")
+    # EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
+    USERNAME = st.secrets("EMAIL_USERNAME")
+    EMAIL_PASSWORD = st.secrets("EMAIL_PASSWORD")
 
     output_dir = './attachments'
     mailbox = 'INBOX'
@@ -86,7 +90,6 @@ def download_attachments(
 from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
-
 
 system_message = SystemMessage("You are a email downloading assistant.\n"
         "You are given a tool to download attachments from emails.\n"
