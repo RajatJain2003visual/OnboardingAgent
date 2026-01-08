@@ -43,7 +43,8 @@ def send_mail(
         raise ValueError("At least one recipient is required")
 
     # app_password = os.getenv("EMAIL_PASSWORD")
-    app_password = st.secrets("EMAIL_PASSWORD")
+    # app_password = st.secrets("EMAIL_PASSWORD")
+    app_password = st.session_state.EMAIL_PASSWORD
     if not app_password:
         raise EnvironmentError("EMAIL_PASSWORD not set")
 
@@ -131,7 +132,8 @@ def send_mail_agent(email_data, to_mail) -> str:
     )
 
     # sender_name = os.getenv("EMAIL_USERNAME")
-    sender_name = st.secrets("EMAIL_USERNAME")
+    # sender_name = st.secrets("EMAIL_USERNAME")
+    sender_name = st.session_state.EMAIL_USERNAME
     message = f"Send the mail based on this content: {email_data}, to : {to_mail} , from : {sender_name}"
     user_message = HumanMessage(message)
 

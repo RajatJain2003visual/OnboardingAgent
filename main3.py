@@ -77,18 +77,21 @@ with st.sidebar:
     app_password = st.text_input("App Password", type="password")
     if is_valid_email(from_mail):
         # save_to_env("EMAIL_USERNAME", from_mail)
-        st.secrets("EMAIL_USERNAME") = from_mail
+        # st.secrets("EMAIL_USERNAME") = from_mail
+        st.session_state.EMAIL_USERNAME = from_mail
     if len(app_password) == 16:
         # save_to_env("EMAIL_PASSWORD", app_password)
-        st.secrets("EMAIL_PASSWORD") = app_password
+        # st.secrets("EMAIL_PASSWORD") = app_password
+        st.session_state.EMAIL_PASSWORD = app_password
 
 
 
 # --- 5. MAIN INPUT & DOWNLOAD ---
 st.header("Enter Candidate Email")
-if "EMAIL_USERNAME" not in os.environ or "EMAIL_PASSWORD" not in os.environ:
+# if "EMAIL_USERNAME" not in os.environ or "EMAIL_PASSWORD" not in os.environ:
+    # st.warning("Please enter Email and App password in sidebar")
+if "EMAIL_USERNAME" not in st.session_state or "EMAIL_PASSWORD" not in st.session_state:
     st.warning("Please enter Email and App password in sidebar")
-
 else:
     to_mail = st.text_input("", placeholder="candidate@example.com")
 

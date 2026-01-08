@@ -30,8 +30,11 @@ def download_attachments(
     # USERNAME = os.getenv("EMAIL_USERNAME")
     # EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
-    USERNAME = st.secrets("EMAIL_USERNAME")
-    EMAIL_PASSWORD = st.secrets("EMAIL_PASSWORD")
+    # USERNAME = st.secrets("EMAIL_USERNAME")
+    # EMAIL_PASSWORD = st.secrets("EMAIL_PASSWORD")
+
+    USERNAME = st.session_state.EMAIL_USERNAME
+    EMAIL_PASSWORD = st.session_state.EMAIL_PASSWORD
 
     output_dir = './attachments'
     mailbox = 'INBOX'
