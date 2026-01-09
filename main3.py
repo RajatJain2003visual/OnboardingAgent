@@ -59,7 +59,8 @@ if "credentials" not in st.session_state:
     flow = Flow.from_client_secrets_file(
         "client_secret.json",
         scopes=SCOPES,
-        redirect_uri="http://localhost:8501"
+        # redirect_uri="http://localhost:8501"
+        redirect_uri="https://onboardingagent.onrender.com"
     )
 
     auth_url, _ = flow.authorization_url(
