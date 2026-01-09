@@ -29,6 +29,8 @@ load_dotenv()
 llm = ChatOpenAI(model="gpt-5-nano")
 
 
+GMAIL_SERVICE = None
+
 # @tool
 # def send_mail(
 #     sender: str,
@@ -102,8 +104,7 @@ llm = ChatOpenAI(model="gpt-5-nano")
 #     return True
 
 @tool
-def send_gmail_message(
-    service,
+def send_mail(
     to: List[str],
     subject: str,
     text: str,
@@ -117,7 +118,6 @@ def send_gmail_message(
     Composes and sends an email using the Gmail API with support for HTML, CC, BCC, and Attachments.
 
     Args:
-        service: The authenticated Gmail API service instance.
         to (List[str]): List of recipient email addresses.
         subject (str): The subject of the email.
         text (str): The plain text body of the email.
@@ -131,6 +131,15 @@ def send_gmail_message(
     Returns:
         dict: The sent message object containing 'id' and 'threadId'.
     """
+
+
+    global GMAIL_SERVICE
+    if GMAIL_SERVICE is None:
+        return "Error: Gmail Service is not initialized. Please log in."
+    
+    service = GMAIL_SERVICE
+
+    # service = st.session_state.service
 
     if not to:
         raise ValueError("At least one recipient is required in the 'to' list.")
@@ -236,10 +245,10 @@ def send_mail_agent(email_data, to_mail) -> str:
         model="gpt-5-nano"
     )
 
-    sender_name = os.getenv("EMAIL_USERNAME")
+    # sender_name = os.getenv("EMAIL_USERNAME")
     # sender_name = st.secrets("EMAIL_USERNAME")
     # sender_name = st.session_state.EMAIL_USERNAME
-    message = f"Send the mail based on this content: {email_data}, to : {to_mail} , from : {sender_name}"
+    message = f"Send the mail based on this content: {email_data}, to : {to_mail}"
     user_message = HumanMessage(message)
 
     messages = [system_message, user_message]

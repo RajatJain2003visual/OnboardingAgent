@@ -17,6 +17,10 @@ IMAP_SERVER = "imap.gmail.com"
 import json
 os.makedirs("attachments", exist_ok=True)
 
+
+GMAIL_SERVICE = None
+
+
 # @tool
 # def download_attachments(
 #     search_criteria:str = None
@@ -90,7 +94,6 @@ os.makedirs("attachments", exist_ok=True)
 
 @tool
 def download_attachments(
-    service,
     download_dir='attachments',
     max_results=10,
     sender=None,
@@ -104,7 +107,6 @@ def download_attachments(
     Downloads email attachments based on structured filters.
     
     Args:
-        service: Authenticated Gmail API service.
         download_dir (str): Folder to save attachments.
         max_results (int): Max emails to check (default 10).
         
@@ -119,6 +121,15 @@ def download_attachments(
         list: Paths of downloaded files.
     """
     
+
+    global GMAIL_SERVICE
+    if GMAIL_SERVICE is None:
+        return "Error: Gmail Service is not initialized. Please log in."
+    
+    service = GMAIL_SERVICE
+
+    # service = st.session_state.service
+
     # --- 1. Construct the Gmail Query String Dynamically ---
     query_parts = ["has:attachment"] # Base requirement: must have files
 
@@ -240,3 +251,5 @@ def download_agent(to_mail:str):
     response = agent.invoke({"messages":messages})
 
     return response['messages'][-1].content
+
+# if __name__ == '__main__':

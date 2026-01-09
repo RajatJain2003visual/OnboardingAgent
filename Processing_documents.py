@@ -7,7 +7,7 @@ import os
 import mimetypes
 import json
 import pandas as pd
-
+from datetime import datetime
 
 client = OpenAI()
 
@@ -62,11 +62,15 @@ def process_documents(folder_path="attachments"):
 def extract_details():
     content = process_documents()
     print("Uploading documents now")
-
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    # content.append({
+    #                 "type": "input_text",
+    #                 "text": prompt,
+    #             })
     content.append({
-                    "type": "input_text",
-                    "text": prompt,
-                })
+        "type": "input_text",
+        "text": f"Current Date: {current_date}\n" + prompt, # Prepend date
+    })
 
     response = client.responses.create(
         model="gpt-4.1-mini",
@@ -135,4 +139,4 @@ def extract_details():
     checklist_df = pd.concat([checklist_df, salary_rows], ignore_index=True)
 
 
-    return checklist_df, df_academics, df_college, df_jobs, df_salary_slips, df_bank_credits, df_identity_docs
+    return (checklist_df, df_academics, df_college, df_jobs, df_salary_slips, df_bank_credits, df_identity_docs), parsed
